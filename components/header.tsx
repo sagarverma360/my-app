@@ -1,10 +1,14 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Header(){
+    
+    const appName=(process.env.NEXT_PUBLIC_appName||"My-App");
     const [navOpen,setNavOpen]=useState(false);
+    const router=useRouter();
     return(
-        <header>
+        <header className="sticky top-0 z-50">
             <nav
                 className="
                 flex flex-wrap
@@ -19,26 +23,46 @@ export default function Header(){
                 "
             >
                 <div>
-                    <Link onClick={()=>setNavOpen(false)} href="/home">
-                        My-App
+                    <Link onClick={()=>setNavOpen(false)} href="/">
+                        {appName}
                     </Link>
                 </div>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    id="menu-button"
-                    className="h-6 w-6 cursor-pointer md:hidden block"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"                    
+                <span                     
                     onClick={()=>setNavOpen(!navOpen)}
                 >
-                    <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                    />
-                </svg>
+                {(!navOpen)?
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="menu-button"
+                        className="h-6 w-6 cursor-pointer md:hidden block"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M4 6h16M4 12h16M4 18h16"
+                        />
+                    </svg>
+                    :
+                    
+                    <svg 
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="menu-button"
+                        className="h-6 w-6 cursor-pointer md:hidden block"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor" 
+                        // viewBox="-46.08 -46.08 552.93 552.93" 
+                        >
+                        <path id="lineAB" d="M 0 24 l 24 -24" strokeWidth="2" />
+                        <path id="lineBC" d="M 0 0 l 24 24"  strokeWidth="2" />
+                    </svg>
+                    }
+                </span>
+                
             
                 <div className={((navOpen)?"block":"hidden")+" w-full md:flex md:items-center md:w-auto"} id="menu">
                 <ul
@@ -49,26 +73,31 @@ export default function Header(){
                     md:justify-between 
                     md:pt-0"
                 >
-                    <li>
-                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block hover:text-purple-400" href="/features"
+                    <li className={"border-none md:border-b-2 md:border-solid "+(router.asPath=="/features"?"md:border-red-400 md:hover:border-purple-500 text-purple-500 hover:text-red-400":"md:border-white  hover:text-purple-400")}>
+                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block" href="/features"
                         >Features</Link>
                     </li>
-                    <li>
-                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block hover:text-purple-400" href="/pricing"
+                    <li className={"border-none md:border-b-2 md:border-solid "+(router.asPath=="/pricing"?"md:border-red-400 md:hover:border-purple-500 text-purple-500 hover:text-red-400":"md:border-white  hover:text-purple-400")}>
+                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block" href="/pricing"
                         >Pricing</Link>
                     </li>
-                    <li>
-                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block hover:text-purple-400" href="/customers"
+                    <li className={"border-none md:border-b-2 md:border-solid "+(router.asPath=="/customers"?"md:border-red-400 md:hover:border-purple-500 text-purple-500 hover:text-red-400":"md:border-white  hover:text-purple-400")}>
+                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block" href="/customers"
                         >Customers</Link>
                     </li>
-                    <li>
-                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block hover:text-purple-400" href="/blog"
+                    <li className={"border-none md:border-b-2 md:border-solid "+(router.asPath=="/blog"?"md:border-red-400 md:hover:border-purple-500 text-purple-500 hover:text-red-400":"md:border-white  hover:text-purple-400")}>
+                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block" href="/blog"
                         >Blog</Link>
                     </li>
-                    <li>
-                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block hover:text-purple-400 text-purple-500"
-                        href="/sign-up"
+                    <li className={"border-none md:border-b-2 md:border-solid "+(router.asPath=="/sign_up"?"md:border-red-400 md:hover:border-purple-500 text-purple-500 hover:text-red-400":"md:border-white  hover:text-purple-400")}>
+                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block"
+                        href="/sign_up"
                         >Sign Up</Link>
+                    </li>
+                    <li className={"border-none md:border-b-2 md:border-solid "+(router.asPath=="/login"?"md:border-red-400 md:hover:border-purple-500 text-purple-500 hover:text-red-400":"md:border-white  hover:text-purple-400")}>
+                    <Link onClick={()=>setNavOpen(false)} className="md:p-4 py-2 block"
+                        href="/login"
+                        >Login</Link>
                     </li>
                 </ul>
                 </div>

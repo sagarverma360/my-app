@@ -1,8 +1,7 @@
 import WebLayout from "@/components/webLayout";
-import Head from "next/head"
 import { useRouter } from "next/router"
 
-const dynamicPage=()=>{
+export default function DynamicPage(){
     const router=useRouter();
     const curentPage=router.query.page||''; 
    
@@ -12,7 +11,6 @@ const dynamicPage=()=>{
         }    
     return(
         <WebLayout page={page}>
-            {curentPage}
             <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
                 <a
                     href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
@@ -86,4 +84,3 @@ const dynamicPage=()=>{
     )
 }
 
-export default dynamicPage;

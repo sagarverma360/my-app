@@ -1,9 +1,16 @@
 import WebLayout from '@/components/webLayout'
 
 export default function Home() {
+  
+  const appName=(process.env.NEXT_PUBLIC_appName||"My-App");
+  const page={
+    title:appName,
+    useTitleAsH1:false,
+    // description:curentPage as string            
+  }    
   return (    
-      <WebLayout>
-        Welcome
+      <WebLayout page={page}>
+        <h1 className={`mb-3 text-2xl font-semibold`}>Welcome to {page.title}</h1>
         <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
