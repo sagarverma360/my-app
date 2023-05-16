@@ -2,7 +2,9 @@
 import Head from "next/head";
 import Header from "./header";
 import { Inter } from 'next/font/google'
-import { ReactNode } from "react";
+import { ReactNode, useContext, useEffect  } from "react";
+import { Store_data, sotoreContextType } from "@/context/context";
+import { getSotreDetails } from "@/helper/helper";
 
 const inter = Inter({ subsets: ['latin'] })
 type webLayoutProps = {
@@ -16,6 +18,15 @@ type webLayoutProps = {
   }
 
 export default function WebLayout({ children, ...pageProps }:webLayoutProps){
+    const { sotreDetails,setStoreDetails } = useContext(Store_data) as sotoreContextType;
+    useEffect(()=>{
+        if(!sotreDetails){
+        console.log("setStoreDetails call");
+        
+        setStoreDetails(getSotreDetails());
+        }    
+    }, []);
+    
     const appName=(process.env.appName||"My-App");
     const pageTitle=(pageProps?.page?.title||appName).trim().replace(/[_]/g,' ').toLowerCase().replace(/\b[a-z]/g,(l)=>{return l.toUpperCase()});
     return(

@@ -1,62 +1,69 @@
 import WebLayout from '@/components/webLayout'
+import { ReactNode } from 'react';
+import { Store_data,sotoreContextType } from '@/context/context'
+import { useContext } from "react";
 
 
 import Link from "next/link";
-import coffeeStoresData from "@/data/coffee-stores.json";
+import coffeeStoresData from "../data/coffee-stores.json";
 import {storeType} from '@/types/type';
-import { useContext } from 'react';
-import { Store_data, sotoreContextType } from '@/context/context';
 
-export async function getStaticProps(context:any) { 
-  console.log("hi from server");
+// export async function getStaticProps(context:any) {
+//   console.log("context",JSON.stringify(context));
   
-  // let domainName = "localhost";//context.req.headers.host;
-  // // domainName=domainName.indexOf(".")!=-1?domainName.split(".")[0]:process.env.NEXT_PUBLIC_appName||"My-App";
-  // domainName=domainName.indexOf(":")!=-1?domainName.split(":")[0]:domainName;
-  // // domainName=domainName.trim().replace(/[_]/g,' ').toLowerCase().replace(/\b[a-z]/g,(l:string)=>{return l.toUpperCase()});
-  // let coffeeStore=coffeeStoresData.find((store:storeType)=>{return store.domainName==domainName});
-  // if(!coffeeStore){
-  //   coffeeStore={
-  //     "id": 0,
-  //     "domainName":"localhost",
-  //     "title":"My store",
-  //     "name": "My store",
-  //     "imgUrl": "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80",
-  //     "websiteUrl": "https://www.strangelovecoffee.ca/",
-  //     "address": "983 Queen St E, Toronto, ON M4M 1K2",
-  //     "neighbourhood": "at King and Spadina"
-  //   };
-  // }
+  
+// }
+
+
+export async function getServerSideProps(context:any) {
+  
+
+  
+  // let domainName = context.req.headers.host;
+  let domainName = context.req.headers.host;
+  // domainName=domainName.indexOf(".")!=-1?domainName.split(".")[0]:process.env.NEXT_PUBLIC_appName||"My-App";
+  domainName=domainName.indexOf(":")!=-1?domainName.split(":")[0]:domainName;
+  // domainName=domainName.trim().replace(/[_]/g,' ').toLowerCase().replace(/\b[a-z]/g,(l:string)=>{return l.toUpperCase()});
+  let coffeeStore=coffeeStoresData.find((store:storeType)=>{return store.domainName==domainName});
+  if(!coffeeStore){
+    coffeeStore={
+      "id": 0,
+      "domainName":"localhost",
+      "title":"My store",
+      "name": "My store",
+      "imgUrl": "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80",
+      "websiteUrl": "https://www.strangelovecoffee.ca/",
+      "address": "983 Queen St E, Toronto, ON M4M 1K2",
+      "neighbourhood": "at King and Spadina"
+    };
+  }
   
   
 
 
   return {
     props:{
-      // domainName,
-      // coffeeStore,
+      domainName,
+      coffeeStore,
       coffeeStores:coffeeStoresData
     }
   }
 }
-
-// export async function getStaticPaths(props:any) {
-//   console.log(props);
-//   return { paths: [], fallback: false };
-  
-// }
 // type homeProps = {
 //   domain?:{
 //       name?:string,
 //   },
 //   children: ReactNode
 // }
-export default function Home(props:any) { 
-  console.log("hi from client");
-  const { sotreDetails : coffeeStore} = useContext(Store_data) as sotoreContextType;
+export default function Home(props:any) {
+  const { sotreDetails, setStoreDetails } = useContext(Store_data) as sotoreContextType;
   
+  setStoreDetails(props?.coffeeStore);
+  // console.log("props",props);
   
-  const appName=(coffeeStore?.title||process.env.NEXT_PUBLIC_appName||"My-App");
+  // export default function Home(props:homeProps) {
+  // const appName=(props?.domain?.name||process.env.NEXT_PUBLIC_appName||"My-App");
+  const appName=(props?.coffeeStore?.title||process.env.NEXT_PUBLIC_appName||"My-App");
   const page={
     title:appName,
     useTitleAsH1:false,
@@ -75,9 +82,9 @@ export default function Home(props:any) {
                     <div key={store.id}>
                       
                       
-                        <a href={`http://${store.domainName}`}>
+                        <Link href={`http://${store.domainName}`}>
                           <h3>{store.name}</h3>
-                        </a>
+                        </Link>
                       
                       
                     </div>
@@ -162,5 +169,4 @@ export default function Home(props:any) {
         </div>
       </WebLayout>
   )
-} 
-
+}
