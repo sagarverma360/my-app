@@ -53,7 +53,7 @@ export async function getStaticProps(context:any) {
 // }
 export default function Home(props:any) { 
   console.log("hi from client");
-  const { sotreDetails : coffeeStore} = useContext(Store_data) as sotoreContextType;
+  const { sotreDetails : coffeeStore,setStoreDetails} = useContext(Store_data) as sotoreContextType;
   
   
   const appName=(coffeeStore?.title||process.env.NEXT_PUBLIC_appName||"My-App");
@@ -74,8 +74,8 @@ export default function Home(props:any) {
                 return(
                     <div key={store.id}>
                       
-                      
-                        <a href={`http://${store.domainName}`}>
+                      {/* href={`http://${store.domainName}`} */}
+                        <a  onClick={()=>{setStoreDetails(store)}}>
                           <h3>{store.name}</h3>
                         </a>
                       
