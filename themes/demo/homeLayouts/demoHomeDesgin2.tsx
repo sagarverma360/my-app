@@ -1,8 +1,7 @@
 import { pageType, storeType } from "@/types/type";
 import Link from "next/link";
 import * as layouts from "../layouts";
-import { Store_data, sotoreContextType } from "@/context/context";
-import { Web_data, webContextType } from "@/context/webContext";
+import { StoreContext, storeContextType } from "@/context/context";
 import { useContext } from "react";
 
 type DemoHomeDesgin1Props = {
@@ -11,14 +10,13 @@ type DemoHomeDesgin1Props = {
   coffeeStores?:storeType[]
 }
 export default function DemoHomeDesgin2({layout,page}:DemoHomeDesgin1Props) {
-  
-  const { webDetails } = useContext(Web_data) as webContextType;
-  const { sotreDetails } = useContext(Store_data) as sotoreContextType;
+  const { state,dispatch } = useContext(StoreContext) as storeContextType;
+  const {webDetails,storeDetails}=state;
   
   
   if (typeof layouts["WebLayout"] !== "undefined") {
     
-    const dataProvider=((layout==="SubWeb"))?sotreDetails||webDetails:webDetails;
+    const dataProvider=((layout==="SubWeb"))?storeDetails||webDetails:webDetails;
     const Layout=layouts["WebLayout"];
     return(
 

@@ -1,10 +1,8 @@
 
 import * as Layouts from "@/themes/demo";
 import { useContext, useEffect } from "react";
-import { Store_data, sotoreContextType } from "@/context/context";
-import { Web_data, webContextType } from "@/context/webContext";
+import { ACTION_TYPES, StoreContext, storeContextType } from "@/context/context";
 import { storeType } from "@/types/type";
-import { useRouter } from "next/router"
 import { getWebDetails } from "@/lib/helper";
 
 
@@ -14,21 +12,32 @@ type dynamicPageProps = {
     curentPage:string[]|string
   }
 export default function PageComponent({coffeeStore,pageType,curentPage}:dynamicPageProps){
-    const { webDetails,setWebDetails } = useContext(Web_data) as webContextType;
-    const { sotreDetails,setStoreDetails } = useContext(Store_data) as sotoreContextType;
-    
+    // const { webDetails,setWebDetails } = useContext(Web_data) as webContextType;
+    // const { storeDetails,dispatch } = useContext(Store_data) as storeContextType;
+    const { state,dispatch } = useContext(StoreContext) as storeContextType;
+    const {webDetails,storeDetails}=state;
         useEffect(()=>{
             if(!webDetails){            
-                setWebDetails(getWebDetails());
+                dispatch({
+                    type: ACTION_TYPES.SET_WEB,
+                    payload: {
+                        "webDetails":getWebDetails(),
+                    },
+                  });
             }    
-        }, [webDetails,setWebDetails]);
+        }, [webDetails,dispatch]);
         
         // const {coffeeStore,pageType}=pageProps;
         useEffect(()=>{
-            if(coffeeStore&&(!sotreDetails||sotreDetails.userName!==coffeeStore?.userName)){
-                setStoreDetails(coffeeStore);
+            if(coffeeStore&&(!storeDetails||storeDetails.userName!==coffeeStore?.userName)){
+                dispatch({
+                    type: ACTION_TYPES.SET_STORE,
+                    payload: {
+                        "storeDetails":coffeeStore,
+                    },
+                  });
             }    
-        }, [coffeeStore,setStoreDetails,sotreDetails]);
+        }, [coffeeStore,dispatch,storeDetails]);
 
 
         const page={

@@ -1,5 +1,5 @@
 
-import { Web_data, webContextType } from "@/context/webContext";
+import { ACTION_TYPES, StoreContext, storeContextType } from "@/context/context";
 import coffeeStoresData from "@/data/coffee-stores.json";
 import { getWebDetails } from "@/lib/helper";
 import * as Layouts from "@/themes/demo";
@@ -16,12 +16,19 @@ export async function getStaticProps(context:any) {
 }
 
 export default function Home(props:any) { 
-  const { webDetails,setWebDetails } = useContext(Web_data) as webContextType;
+  const { state,dispatch } = useContext(StoreContext) as storeContextType;
+
+  const {webDetails}=state;
   useEffect(()=>{
-    if(!webDetails){            
-        setWebDetails(getWebDetails());
-    }    
-}, [webDetails,setWebDetails]);
+      if(!webDetails){            
+          dispatch({
+              type: ACTION_TYPES.SET_WEB,
+              payload: {
+                  "webDetails":getWebDetails(),
+              },
+            });
+      }    
+  }, [webDetails,dispatch]);
   
   const {coffeeStores}=props;
   

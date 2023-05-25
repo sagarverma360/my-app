@@ -1,0 +1,3 @@
+NEXT_PUBLIC_appName="Coffee-App"
+NEXT_PUBLIC_appMenus="about-us,features,pricing,customers,blog"
+NEXT_PUBLIC_customerLogin=true

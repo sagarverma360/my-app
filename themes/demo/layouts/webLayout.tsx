@@ -3,8 +3,8 @@ import Head from "next/head";
 import * as Headers from "../components/header";
 import { Inter } from 'next/font/google'
 import { ReactNode, useContext, useEffect} from "react";
-import { Web_data, webContextType } from "@/context/webContext";
 import type {pageType} from '@/types/type';
+import { StoreContext, storeContextType } from "@/context/context";
 
 const inter = Inter({ subsets: ['latin'] })
 type webLayoutProps = {
@@ -14,16 +14,8 @@ type webLayoutProps = {
   }
 
 export default function WebLayout({ children, ...pageProps }:webLayoutProps){
-    const { webDetails } = useContext(Web_data) as webContextType;
-    // useEffect(()=>{
-    //     if(!webDetails){            
-    //         setWebDetails({
-    //             appName:process.env.NEXT_PUBLIC_appName||"My-App",
-    //             menus:process.env.NEXT_PUBLIC_appMenus?.split(',')||[],
-    //             customerLogin:process.env.NEXT_PUBLIC_customerLogin||false
-    //         });
-    //     }    
-    // }, []);
+    const { state } = useContext(StoreContext) as storeContextType;
+    const {webDetails}=state;
     if(typeof Headers["Header"]!==undefined){
         const Header=Headers["Header"];
         const appName=(process.env.appName||"My-App");

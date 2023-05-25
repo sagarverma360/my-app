@@ -1,5 +1,4 @@
-import { Store_data, sotoreContextType } from "@/context/context";
-import { Web_data, webContextType } from "@/context/webContext";
+import { StoreContext, storeContextType } from "@/context/context";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {  useContext, useState } from "react";
@@ -9,11 +8,11 @@ type headerProps={
 }
 
 export default function Header({isSubWeb}:headerProps){
-    const { webDetails } = useContext(Web_data) as webContextType;
-    const { sotreDetails } = useContext(Store_data) as sotoreContextType;
+    const { state } = useContext(StoreContext) as storeContextType;
+    const {webDetails,storeDetails}=state;
     
-    const dataProvider=(isSubWeb==true)?sotreDetails||webDetails:webDetails;
-    const urlPreFix=(isSubWeb==true)?(sotreDetails)?"/"+sotreDetails?.userName:"":"";
+    const dataProvider=(isSubWeb==true)?storeDetails||webDetails:webDetails;
+    const urlPreFix=(isSubWeb==true)?(storeDetails)?"/"+storeDetails?.userName:"":"";
     const [navOpen,setNavOpen]=useState(false);
     const router=useRouter();
     console.log("dataProvider",dataProvider);
@@ -36,9 +35,9 @@ export default function Header({isSubWeb}:headerProps){
                 "
             >
                 <div>
-                    {isSubWeb==true&&sotreDetails?.parentUserName!=""?
-                    <Link onClick={()=>setNavOpen(false)} href={`/${sotreDetails?.parentUserName}`}>
-                        {sotreDetails?.parentName}
+                    {isSubWeb==true&&storeDetails?.parentUserName!=""?
+                    <Link onClick={()=>setNavOpen(false)} href={`/${storeDetails?.parentUserName}`}>
+                        {storeDetails?.parentName}
                     </Link>:
                     <Link onClick={()=>setNavOpen(false)} href={`/`}>
                         {webDetails?.name}
@@ -47,8 +46,8 @@ export default function Header({isSubWeb}:headerProps){
                     {isSubWeb==true&&
                     <>                    
                     {" / "}
-                    <Link onClick={()=>setNavOpen(false)} href={`/${sotreDetails?.userName}`}>
-                        {sotreDetails?.name||webDetails?.name}
+                    <Link onClick={()=>setNavOpen(false)} href={`/${storeDetails?.userName}`}>
+                        {storeDetails?.name||webDetails?.name}
                     </Link>
                     </>}
                 </div>

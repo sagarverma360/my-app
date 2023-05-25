@@ -1,16 +1,13 @@
-import Context from '@/context/context' 
-import WebContext from '@/context/webContext'
+import ContextProvider from '@/context/context' 
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 
 export default function App({ Component, pageProps }: AppProps) {
   
   return (<>
-  <Context>
-    <WebContext>
+  <ContextProvider>
       <Component {...pageProps} />
-    </WebContext>
-  </Context>
+  </ContextProvider>
   </>)
   
 }
