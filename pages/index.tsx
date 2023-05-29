@@ -1,18 +1,29 @@
 
 import { ACTION_TYPES, StoreContext, storeContextType } from "@/context/context";
-import coffeeStoresData from "@/data/coffee-stores.json";
+// import coffeeStoresData from "@/data/coffee-stores.json";
 import { getWebDetails } from "@/lib/helper";
 import * as Layouts from "@/themes/demo";
 import { useContext, useEffect } from "react";
 
 export async function getStaticProps(context:any) { 
-
+  try {    
+  const response=await fetch("http://localhost/api/get_stores");
+  const data=await response.json();
   return {
     props:{
       // "appName":(process.env.appName||"My-App"),
-      "coffeeStores":coffeeStoresData
+      // "coffeeStores":coffeeStoresData
+      "coffeeStores":data.coffeeStores||[]
     }
   }
+  } catch (error) {
+    return {
+      props:{
+        "coffeeStores":[]
+      }
+    }
+  } 
+  
 }
 
 export default function Home(props:any) { 

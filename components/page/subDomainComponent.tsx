@@ -6,14 +6,12 @@ import { storeType } from "@/types/type";
 import { getWebDetails } from "@/lib/helper";
 
 
-type dynamicPageProps = {
+type dynamicPageProps = {  
     pageType:string,
     coffeeStore:storeType|null,
-    curentPage:string[]|string
+    url:string[]|string
   }
-export default function PageComponent({coffeeStore,pageType,curentPage}:dynamicPageProps){
-    // const { webDetails,setWebDetails } = useContext(Web_data) as webContextType;
-    // const { storeDetails,dispatch } = useContext(Store_data) as storeContextType;
+export default function SubDomainComponent({coffeeStore,pageType,url}:dynamicPageProps){
     const { state,dispatch } = useContext(StoreContext) as storeContextType;
     const {webDetails,storeDetails}=state;
         useEffect(()=>{
@@ -26,8 +24,6 @@ export default function PageComponent({coffeeStore,pageType,curentPage}:dynamicP
                   });
             }    
         }, [webDetails,dispatch]);
-        
-        // const {coffeeStore,pageType}=pageProps;
         useEffect(()=>{
             if(coffeeStore&&(!storeDetails||storeDetails.userName!==coffeeStore?.userName)){
                 dispatch({
@@ -41,29 +37,16 @@ export default function PageComponent({coffeeStore,pageType,curentPage}:dynamicP
 
 
         const page={
-            title:(pageType=="page")?curentPage[0]:((pageType!="sub-domain")?`${curentPage[1]} :: `:``)+coffeeStore?.title as string,
+            title:((pageType!="index")?`${url[1]} :: `:``)+coffeeStore?.title as string,
         }    
-        const layout=(pageType=="page"||pageType=="sub-page")?"DemoAboutDesgin1":(pageType=="sub-domain")?"DemoHomeDesgin2":"DemoLoginDesgin1";
+        const layout=(pageType=="index")?"DemoHomeDesgin2":(pageType=="page")?"DemoAboutDesgin1":"DemoLoginDesgin1";
         if (typeof Layouts[layout as keyof typeof Layouts] === "undefined") {        
             return <div>PageComponent Layouts Not Found...</div>;
         }else{
            const HomeLayout=Layouts[layout as keyof typeof Layouts];
         
             return(
-                <>
-                {
-                    {
-                        "page":
-                            <HomeLayout  layout={"WebLayout"}  page={page}  coffeeStores={[]} />
-                                
-                            ,
-                        "sub-domain":<HomeLayout layout={"SubWeb"} coffeeStores={[]} page={page} />,
-                        "sub-page":<HomeLayout  layout={"SubWeb"}  page={page} coffeeStores={[]} />,
-                        "sub-login-page":coffeeStore?<div>sub-login-page {coffeeStore.domainName}</div>:<></>
-                    }[pageType]
-                }
-                
-                </>
+                <HomeLayout  layout={"SubWeb"}  page={page} coffeeStores={[]} />
             ) 
         }
         
